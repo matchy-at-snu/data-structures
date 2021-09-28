@@ -18,9 +18,9 @@ I adopted `Gradle` as the build system -- this is probably using a sledgehammer 
 # Build, run or test all the mini projects
 ./gradlew build
 ./gradlew run
-./gadlew test
+./gradlew test
 
 # Or perform those actions on a specific assignment / practice
-./gradlew :assignments:1:test --args="arg1 --foo bar"
+./gradlew :assignments:1:run --args="arg1 --foo bar"
 ./gradlew :assignments:1:test
 ```
