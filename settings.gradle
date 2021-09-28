@@ -1,3 +1,4 @@
 rootProject.name = 'data-structures-snu'
 include('assignments')
 include('assignments:1')
+include('assignments:2')
