@@ -8,13 +8,13 @@ public class BST { // Binary Search Tree implementation
 
   public BST() { }
 
-  public int size() { }
+  public int size() { return 0; }
   public void insert(String key) { }
-  public boolean find(String key) { }
+  public boolean find(String key) { return true; }
 
-  public int sumFreq() { }
-  public int sumProbes() { }
-  public int sumWeightedPath() { }
+  public int sumFreq() { return 0; }
+  public int sumProbes() { return 0; }
+  public int sumWeightedPath() { return 0; }
   public void resetCounters() { }
 
   public void nobst() { }	// Set NOBSTified to true.
