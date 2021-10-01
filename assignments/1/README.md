@@ -12,7 +12,7 @@ for addition and subtraction operations on polynomials as well as constructors a
   The skeleton file is named `PolynomialSkel.java`. You can copy it to your working directory and rename it
   to `Polynomial.java`. You should then provide implementations of all the methods defined in the class skeleton. You
   can add more methods as you wish, but are not allowed to remove any method defined in the class skeleton.
-- No `main()` method is necessary in your class implementation. We will test and evaluate your class im- plementation
+- No `main()` method is necessary in your class implementation. We will test and evaluate your class implementation
   with our own test program (`MainPoly.java`) containing themain()method, which is provided at eTL. This test program
   uses `TextInputStream` class for input and output, which is also provided. So, there is no need to worry about I/O and
   no need to turn in any additional class containing the
@@ -50,7 +50,7 @@ The late submission and regrading policies are described in the course syllabus.
 
 ## Submission
 
-Turning in your programming assignment must be done at eTL. Do not submit any.classor test files. Sub- mit only `.java`
+Turning in your programming assignment must be done at eTL. Do not submit any.classor test files. Submit only `.java`
 files in a single archive (e.g., `zip` or `tar`). Refer to the course syllabus for general submission instructions. More
 specific instructions will be given by the TA.
 
