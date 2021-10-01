@@ -2,8 +2,6 @@ plugins {
     id 'common-conventions'
 }
 
-jar {
-    manifest {
-        attributes('Main-class': 'MainPoly')
-    }
+application {
+    mainClass = 'MainPoly'
 }
