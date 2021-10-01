@@ -29,8 +29,7 @@ Sample input files (e.g.,`test1`) and their output files (e.g.,`test1.out`) are 
 - Each input file contains two polynomials connected by an operator. Each polynomial is represented by a sequence of (
   coefficient, exponent) pairs. For example, a polynomial `x^3 + 2x+ 4x+ 6x^7` is encoded as
   `1 3 2 1 4 1 6 7` in the input file. Note that the polynomial terms are not necessarily sorted in any particular order
-  in the input file. However, when a polynomial is printed by the `print` method, the terms must be printed out in *
-  decreasing* order of exponents. Although two or more terms with the same exponent may appear in an input polynomial,
+  in the input file. However, when a polynomial is printed by the `print` method, the terms must be printed out in *decreasing* order of exponents. Although two or more terms with the same exponent may appear in an input polynomial,
   an output polynomial must have only one term for a distinct exponent with a non-zero coefficient.
 - For any term in a polynomial, its coefficient and exponent are an integer that can be represented by a 32-bit integer
   variable. The number of terms in a polynomial can only be limited by the memory capacity of your Java Virtual Machine.
@@ -43,8 +42,8 @@ the class) and needs to be aborted, it will be considered incorrect. General gra
 
 ```
 10 points Program compiles without errors and is on the right track,
-0-50 points Works onsimpletest cases,
-0-40 points Works oncomplextest cases.
+0-50 points Works on simple test cases,
+0-40 points Works on complex test cases.
 ```
 
 The late submission and regrading policies are described in the course syllabus.
