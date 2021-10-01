@@ -32,7 +32,7 @@ public class Polynomial {
     public Polynomial sub(Polynomial opnd) {
         for (var entry : opnd.getPolynomialEntries()) {
             polynomial.compute(entry.getKey(), (k, v) -> (
-                    (v == null) ? entry.getValue() : v - entry.getValue()
+                    (v == null) ? -entry.getValue() : v - entry.getValue()
             ));
         }
         return this;
