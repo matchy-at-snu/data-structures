@@ -48,7 +48,21 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
     }
 
     public boolean find(String key) {
-        return true;
+        if (this.root == null) {
+            return false;
+        }
+        return _find(root, key);
+    }
+
+    private boolean _find(Node root, String key) {
+        if (root == null) {
+            return false;
+        }
+        if (root.key.compareTo(key) == 0) {
+            return true;
+        } else {
+            return _find(root.left, key) || _find(root.right, key);
+        }
     }
 
     public int sumFreq() {
