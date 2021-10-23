@@ -5,11 +5,11 @@ plugins {
 
 repositories {
     mavenCentral()
-    jcenter() // TODO: remove this deprecated repository
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    testImplementation 'edu.princeton.cs:algs4:1.0.4'
+    implementation 'com.github.kevin-wayne:algs4:master-SNAPSHOT'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.6.0'
 }
 
