@@ -5,9 +5,11 @@ plugins {
 
 repositories {
     mavenCentral()
+    jcenter() // TODO: remove this deprecated repository
 }
 
 dependencies {
+    testImplementation 'edu.princeton.cs:algs4:1.0.4'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.6.0'
 }
 
