@@ -16,10 +16,20 @@ class AVLTest {
     @BeforeAll
     static void initialize() {
         String[] words = lorem.getParagraphs(5, 10).split("\\s+");
+        for (var word : words) {
+            princetonAVL.put(word, word);
+            myAVL.insert(word);
+        }
+    }
 
+    @Test
+    void size() {
+        assertEquals(princetonAVL.size(), myAVL.size());
     }
 
     @Test
     void insert() {
+        assertEquals(princetonAVL.keys().toString().trim(),
+                String.join(" ", myAVL.keys()));
     }
 }
