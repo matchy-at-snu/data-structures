@@ -8,6 +8,7 @@ public abstract class AbstractBST {
         protected final String key;
         protected int freq;
         protected int accessCount;
+        protected int level;
 
         public Node(String key) {
             this.parent = null;
@@ -16,6 +17,7 @@ public abstract class AbstractBST {
             this.key = key;
             this.freq = 1;
             this.accessCount = 0;
+            this.level = 0;
         }
 
         @Override
@@ -70,6 +72,7 @@ public abstract class AbstractBST {
 
     /**
      * Resets both the frequencies and access counts for all the keys in the tree
+     * to zero
      */
     public abstract void resetCounters();
 

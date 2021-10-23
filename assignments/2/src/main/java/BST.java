@@ -26,26 +26,28 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
             root = node;
             this.size++;
         } else {
-            _insert(root, node);
+            _insert(root, node, 1);
         }
     }
 
-    private void _insert(Node root, Node node) {
+    private void _insert(Node root, Node node, int level) {
         if (node.compareTo(root) < 0) { //
             if (root.left == null) {
                 root.left = node;
                 node.parent = root;
+                node.level = level;
                 this.size++;
             } else {
-                _insert(root.left, node);
+                _insert(root.left, node, ++level);
             }
         } else if (node.compareTo(root) > 0) {
             if (root.right == null) {
                 root.right = node;
                 node.parent = root;
+                node.level = level;
                 this.size++;
             } else {
-                _insert(root.right, node);
+                _insert(root.right, node, ++level);
             }
         } else {
             root.freq = root.freq + 1;
@@ -71,18 +73,53 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
     }
 
     public int sumFreq() {
-        return 0;
+        return _sumFreq(this.root);
+    }
+
+    private int _sumFreq(Node root) {
+        if (root == null) {
+            return 0;
+        } else {
+            return root.freq + _sumFreq(root.left)  + _sumFreq(root.right);
+        }
     }
 
     public int sumProbes() {
-        return 0;
+        return _sumProbes(this.root);
+    }
+
+    private int _sumProbes(Node root) {
+        if (root == null) {
+            return 0;
+        } else {
+            return root.accessCount + _sumProbes(root.left) + _sumProbes(root.right);
+        }
     }
 
     public int sumWeightedPath() {
-        return 0;
+        return _sumWeightedPath(this.root);
+    }
+
+    private int _sumWeightedPath(Node root) {
+        if (root == null) {
+            return 0;
+        } else {
+            return root.level + _sumWeightedPath(root.left) + _sumWeightedPath(root.right);
+        }
     }
 
     public void resetCounters() {
+        _resetCounters(this.root);
+    }
+
+    private void _resetCounters(Node root) {
+        if (root == null) {
+            return;
+        }
+        root.freq = 0;
+        root.accessCount = 0;
+        _resetCounters(root.left);
+        _resetCounters(root.right);
     }
 
     public void nobst() {
@@ -94,6 +131,16 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
     }    // Set OBSTified to true.
 
     public void print() {
+        _print(this.root);
+    }
+
+    private void _print(Node root) {
+        if (root == null) {
+            return;
+        }
+        _print(root.left);
+        System.out.println(root);
+        _print(root.right);
     }
 
     /**
@@ -109,11 +156,11 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
         return arrayList;
     }
 
-    private void keys(Node x, ArrayList<String> arrayList) {
-        if (x == null) return;
-        keys(x.left, arrayList);
-        arrayList.add(x.key);
-        keys(x.right, arrayList);
+    private void keys(Node root, ArrayList<String> arrayList) {
+        if (root == null) return;
+        keys(root.left, arrayList);
+        arrayList.add(root.key);
+        keys(root.right, arrayList);
     }
 
 }
