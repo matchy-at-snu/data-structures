@@ -26,28 +26,26 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
             root = node;
             this.size++;
         } else {
-            _insert(root, node, 1);
+            _insert(root, node);
         }
     }
 
-    private void _insert(Node root, Node node, int level) {
+    private void _insert(Node root, Node node) {
         if (node.compareTo(root) < 0) { //
             if (root.left == null) {
                 root.left = node;
                 node.parent = root;
-                node.level = level;
                 this.size++;
             } else {
-                _insert(root.left, node, ++level);
+                _insert(root.left, node);
             }
         } else if (node.compareTo(root) > 0) {
             if (root.right == null) {
                 root.right = node;
                 node.parent = root;
-                node.level = level;
                 this.size++;
             } else {
-                _insert(root.right, node, ++level);
+                _insert(root.right, node);
             }
         } else {
             root.freq = root.freq + 1;
@@ -104,7 +102,7 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
         if (root == null) {
             return 0;
         } else {
-            return root.level + _sumWeightedPath(root.left) + _sumWeightedPath(root.right);
+            return root.level() + _sumWeightedPath(root.left) + _sumWeightedPath(root.right);
         }
     }
 

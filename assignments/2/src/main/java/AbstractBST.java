@@ -8,7 +8,7 @@ public abstract class AbstractBST {
         protected final String key;
         protected int freq;
         protected int accessCount;
-        protected int level;
+        protected int height;
 
         public Node(String key) {
             this.parent = null;
@@ -17,7 +17,17 @@ public abstract class AbstractBST {
             this.key = key;
             this.freq = 1;
             this.accessCount = 0;
-            this.level = 0;
+            this.height = 1;
+        }
+
+        public int level() {
+            int level = 0;
+            Node parent = this.parent;
+            while (parent != null) {
+                level++;
+                parent = parent.parent;
+            }
+            return level;
         }
 
         @Override
