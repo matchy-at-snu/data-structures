@@ -2,8 +2,7 @@ plugins {
     id 'common-conventions'
 }
 
-jar {
-    manifest {
-        attributes('Main-class': 'MainBst')
-    }
+application {
+    mainClass = 'MainBst'
 }
+
