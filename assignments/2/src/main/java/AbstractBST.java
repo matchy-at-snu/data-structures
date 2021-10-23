@@ -84,7 +84,9 @@ public abstract class AbstractBST {
 
     /**
      * Prints the keys in the tree in the increasing order of their values.
-     * Each key should appear on a separate line and
+     * Each key should appear on a separate line and in the format of
+     * [key:frequency:access_count]
      */
     public abstract void print();
+
 }
