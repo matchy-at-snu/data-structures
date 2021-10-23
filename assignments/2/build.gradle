@@ -2,6 +2,10 @@ plugins {
     id 'common-conventions'
 }
 
+dependencies {
+    testImplementation 'com.thedeanda:lorem:2.1'
+}
+
 application {
     mainClass = 'MainBst'
 }

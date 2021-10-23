@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.kevin-wayne:algs4:master-SNAPSHOT'
+    testImplementation 'com.github.kevin-wayne:algs4:master-SNAPSHOT'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.6.0'
 }
 
