@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -28,8 +28,8 @@ public class MainPolyTest {
     public void testOnTestCases() throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
         for (var testcase : testCases) {
-            String infile = classLoader.getResource(testcase).getPath();
-            String outfile = classLoader.getResource(testcase + ".out").getPath();
+            String infile = Objects.requireNonNull(classLoader.getResource(testcase)).getPath();
+            String outfile = Objects.requireNonNull(classLoader.getResource(testcase + ".out")).getPath();
             String correct = Files.readString(Path.of(outfile), StandardCharsets.UTF_8).trim();
 
             MainPoly.main(new String[]{infile});
