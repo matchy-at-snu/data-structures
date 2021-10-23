@@ -3,8 +3,6 @@
 // Modified by Matchy
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Queue;
 
 public class BST extends AbstractBST { // Binary Search Tree implementation
     protected boolean NOBSTified = false;
@@ -15,13 +13,18 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
     }
 
     public int size() {
-        return 0;
+        if (root == null) {
+            return 0;
+        } else {
+            return size;
+        }
     }
 
     public void insert(String key) {
         Node node = new Node(key);
         if (root == null) {
             root = node;
+            this.size++;
         } else {
             _insert(root, node);
         }
@@ -32,6 +35,7 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
             if (root.left == null) {
                 root.left = node;
                 node.parent = root;
+                this.size++;
             } else {
                 _insert(root.left, node);
             }
@@ -39,6 +43,7 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
             if (root.right == null) {
                 root.right = node;
                 node.parent = root;
+                this.size++;
             } else {
                 _insert(root.right, node);
             }
