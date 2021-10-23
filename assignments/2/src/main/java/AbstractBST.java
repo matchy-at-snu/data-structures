@@ -10,6 +10,7 @@ public abstract class AbstractBST {
         protected int accessCount;
 
         public Node(String key) {
+            this.parent = null;
             this.left = null;
             this.right = null;
             this.key = key;
@@ -31,9 +32,11 @@ public abstract class AbstractBST {
     }
 
     protected Node root;
+    protected int size;
 
     public AbstractBST() {
         this.root = null;
+        this.size = 0;
     }
 
     public abstract int size();
