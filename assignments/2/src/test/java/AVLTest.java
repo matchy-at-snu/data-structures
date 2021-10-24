@@ -31,5 +31,7 @@ class AVLTest {
     void insert() {
         assertEquals(princetonAVL.keys().toString().trim(),
                 String.join(" ", myAVL.keys()));
+        assertEquals(princetonAVL.keysLevelOrder().toString().trim(),
+                String.join(" ", myAVL.keysLevelOrder()));
     }
 }

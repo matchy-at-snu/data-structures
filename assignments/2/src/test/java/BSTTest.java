@@ -32,6 +32,8 @@ class BSTTest {
     void insert() {
         assertEquals(princetonBST.keys().toString().trim(),
                 String.join(" ", myBST.keys()));
+        assertEquals(princetonBST.levelOrder().toString().trim(),
+                String.join(" ", myBST.keysLevelOrder()));
     }
 
     @Test

@@ -3,6 +3,7 @@
 // Modified by Matchy
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class BST extends AbstractBST { // Binary Search Tree implementation
     protected boolean NOBSTified = false;
@@ -67,12 +68,7 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
             root.accessCount = root.accessCount + 1;
             return true;
         } else {
-            if (root.left != null) {
-                root.left.accessCount++;
-            }
-            if (root.right != null) {
-                root.right.accessCount++;
-            }
+            root.accessCount = root.accessCount + 1;
             return _find(root.left, key) || _find(root.right, key);
         }
     }
@@ -85,7 +81,7 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
         if (root == null) {
             return 0;
         } else {
-            return root.freq + _sumFreq(root.left)  + _sumFreq(root.right);
+            return root.freq + _sumFreq(root.left) + _sumFreq(root.right);
         }
     }
 
@@ -167,6 +163,25 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
         keys(root.left, arrayList);
         arrayList.add(root.key);
         keys(root.right, arrayList);
+    }
+
+    public Iterable<String> keysLevelOrder() {
+        LinkedList<String> keys = new LinkedList<>();
+        if (root != null) {
+            LinkedList<Node> queue = new LinkedList<>();
+            queue.add(root);
+            while (!queue.isEmpty()) {
+                Node node = queue.getFirst();
+                keys.add(node.key);
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+            }
+        }
+        return keys;
     }
 
 }

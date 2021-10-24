@@ -20,7 +20,6 @@ public class AVL extends BST {
     }
 
     private Node _insert(Node root, Node node) {
-
         if (node.compareTo(root) < 0) { // should insert to right subtree
             if (root.left == null) {
                 root.left = node;
@@ -31,15 +30,13 @@ public class AVL extends BST {
             }
             // Balance
             if (height(root.left) - height(root.right) == 2) {
+                Node parent = root.parent;
                 if (node.compareTo(root.left) < 0) {
-                    Node parent = root.parent;
                     root = rotateRight(root);
-                    root.parent = parent;
                 } else {
-                    Node parent = root.parent;
                     root = rotateLeftRight(root);
-                    root.parent = parent;
                 }
+                root.parent = parent;
             }
         } else if (node.compareTo(root) > 0) { // should insert to right subtree
             if (root.right == null) {
@@ -51,11 +48,13 @@ public class AVL extends BST {
             }
             // Balance
             if (height(root.right) - height(root.left) == 2) {
+                Node parent = root.parent;
                 if (node.compareTo(root.right) >= 0) {
                     root = rotateLeft(root);
                 } else {
                     root = rotateRightLeft(root);
                 }
+                root.parent = parent;
             }
         } else { // already in the tree
             root.freq = root.freq + 1;
@@ -78,12 +77,8 @@ public class AVL extends BST {
         Node newRoot = root.left;
 
         root.left = newRoot.right;
-        if (newRoot.right != null) {
-            newRoot.right.parent = root;
-        }
 
         newRoot.right = root;
-        newRoot.parent = root.parent;
         root.parent = newRoot;
 
         return newRoot;
@@ -93,12 +88,8 @@ public class AVL extends BST {
         Node newRoot = root.right;
 
         root.right = newRoot.left;
-        if (newRoot.left != null) {
-            newRoot.left.parent = root;
-        }
 
         newRoot.left = root;
-        newRoot.parent = root.parent;
         root.parent = newRoot;
         return newRoot;
     }
