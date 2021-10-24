@@ -54,9 +54,6 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
     }
 
     public boolean find(String key) {
-        if (this.root == null) {
-            return false;
-        }
         return _find(root, key);
     }
 
@@ -69,7 +66,11 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
             return true;
         } else {
             root.accessCount = root.accessCount + 1;
-            return _find(root.left, key) || _find(root.right, key);
+            if (key.compareTo(root.key) < 0 ) {
+                return _find(root.left, key);
+            } else {
+                return _find(root.right, key);
+            }
         }
     }
 
@@ -171,7 +172,7 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
             LinkedList<Node> queue = new LinkedList<>();
             queue.add(root);
             while (!queue.isEmpty()) {
-                Node node = queue.getFirst();
+                Node node = queue.remove();
                 keys.add(node.key);
                 if (node.left != null) {
                     queue.add(node.left);

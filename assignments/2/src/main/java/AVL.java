@@ -27,6 +27,7 @@ public class AVL extends BST {
                 this.size++;
             } else {
                 root.left = _insert(root.left, node);
+                root.left.parent = root;
             }
             // Balance
             if (height(root.left) - height(root.right) == 2) {
@@ -45,11 +46,12 @@ public class AVL extends BST {
                 this.size++;
             } else {
                 root.right = _insert(root.right, node);
+                root.right.parent = root;
             }
             // Balance
             if (height(root.right) - height(root.left) == 2) {
                 Node parent = root.parent;
-                if (node.compareTo(root.right) >= 0) {
+                if (node.compareTo(root.right) > 0) {
                     root = rotateLeft(root);
                 } else {
                     root = rotateRightLeft(root);
