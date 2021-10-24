@@ -59,11 +59,12 @@ class MainBstTest {
 
             while (itExpected.hasNext() && itActual.hasNext()) {
                 String expectedLine = itExpected.next();
+                String actualLine = itActual.next();
                 if (expectedLine.startsWith("CPU") || expectedLine.startsWith("Memory")) {
-                    stdout.println(expectedLine);
-                    stdout.println(itActual.next());
+                    stdout.println(expectedLine + "\t" + actualLine);
                 } else {
-                    assertEquals(expectedLine, itActual.next());
+                    stdout.println(expectedLine + "\t" + actualLine);
+                    assertEquals(expectedLine, actualLine);
                 }
             }
 
