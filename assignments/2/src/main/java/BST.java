@@ -64,8 +64,15 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
             return false;
         }
         if (root.key.compareTo(key) == 0) {
+            root.accessCount = root.accessCount + 1;
             return true;
         } else {
+            if (root.left != null) {
+                root.left.accessCount++;
+            }
+            if (root.right != null) {
+                root.right.accessCount++;
+            }
             return _find(root.left, key) || _find(root.right, key);
         }
     }
@@ -102,7 +109,8 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
         if (root == null) {
             return 0;
         } else {
-            return root.level() + _sumWeightedPath(root.left) + _sumWeightedPath(root.right);
+            int weightedPath = root.freq * (1 + root.level());
+            return weightedPath + _sumWeightedPath(root.left) + _sumWeightedPath(root.right);
         }
     }
 
