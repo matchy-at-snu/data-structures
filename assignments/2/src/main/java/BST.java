@@ -142,26 +142,90 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
 
     public void nobst() {
         NOBSTified = true; // Set NOBSTified to true.
-        List<Node> nodeList = getAllNodes();
-//        this.root = nobstify(null, nodeList);
+        ArrayList<Node> nodeList = getAllNodes();
+
+        NOBSTSubTree[][] nbt = nobstify(nodeList);
+        buildNOBST(nodeList, nbt);
     }
 
-    private Node nobstify(List<Node> nodeList) {
-//        for (int i =0; i < nodeList.size() - 1; i++) {
-//
-//        }
-        return null;
+    private void buildNOBST(ArrayList<Node> nodeList, NOBSTSubTree[][] m) {
+        Node node = m[0][m.length - 1].root;
+        int index = nodeList.indexOf(node);
+        this.root = node;
+        node.parent = null;
+        this.root.left = _buildNOBST(this.root, 0, index - 1, nodeList, m);
+        this.root.right = _buildNOBST(this.root, index + 1, m.length - 1, nodeList, m);
     }
 
-//    private algorithmK() {
-//
+    private Node _buildNOBST(Node parent, int low, int high, ArrayList<Node> nodeList, NOBSTSubTree[][] m) {
+        if (low > high) {
+            return null;
+        }
+        Node node = m[low][high].root;
+        int index = nodeList.indexOf(node);
+        node.parent = parent;
+        node.left = _buildNOBST(node, low, index - 1, nodeList, m);
+        node.right = _buildNOBST(node, index + 1, high, nodeList, m);
+        return node;
+    }
+
+    private class NOBSTSubTree {
+        int i;
+        int j;
+        Node root;
+        int cost;
+
+        NOBSTSubTree(int i, int j, Node root, int cost) {
+            this.i = i;
+            this.j = j;
+            this.root = root;
+            this.cost = cost;
+        }
+    }
+
+    private NOBSTSubTree[][] nobstify(ArrayList<Node> nodeList) {
+        NOBSTSubTree[][] nobstMatrix = new NOBSTSubTree[nodeList.size()][nodeList.size()];
+        for (int i = 0; i < nobstMatrix.length; i++) { // Initialize a diagonal matrix
+            for (int j = i; j < nobstMatrix.length; j++) {
+                if (i == j) {
+                    nobstMatrix[i][j] = new NOBSTSubTree(i, j, nodeList.get(i), nodeList.get(i).freq);
+                } else {
+                    nobstMatrix[i][j] = new NOBSTSubTree(i, j, null, Integer.MAX_VALUE);
+                }
+            }
+        }
+        for (int len = 2; len <= nobstMatrix.length; len++) {
+            for (int low = 0; low <= nobstMatrix.length - len; low++) {
+
+                int minCS = Integer.MAX_VALUE;
+                int high = low + len - 1;
+                int p = arraySum(low, high, nodeList);
+                for (int r = low; r <= high; r++) {
+                    // apply monotonicity
+                    int leftMin = r > low ? nobstMatrix[low][r - 1].cost : 0;
+                    int rightMin = r < high ? nobstMatrix[r + 1][high].cost : 0;
+                    int cs = Math.abs(rightMin - leftMin);
+                    if (cs < minCS) {
+                        minCS = cs;
+                        nobstMatrix[low][high].cost = p;
+                        nobstMatrix[low][high].root = nodeList.get(r);
+                    }
+                }
+            }
+        }
+
+        return nobstMatrix;
+    }
+
+
+//    private algorithmK(List<Node> nodeList) {
+//        for
 //    }
 
     public void obst() {
         OBSTified = true; // Set OBSTified to true.
         ArrayList<Node> nodeList = getAllNodes();
         OBSTPair[][] obstMatrix = new OBSTPair[nodeList.size()][nodeList.size()];
-        System.out.println("here");
         constructMatrix(nodeList, obstMatrix);
         buildOBST(nodeList, obstMatrix);
     }
@@ -198,7 +262,7 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
             }
         }
 
-        // DP
+        // DP, len is the distance between high and low. double pair -> triple pair...
         for (int len = 2; len <= obstMatrix.length; len++) {
             for (int low = 0; low <= obstMatrix.length - len; low++) {
                 int minCS = Integer.MAX_VALUE;
