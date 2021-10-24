@@ -44,11 +44,14 @@ class MainBstTest {
         Iterator<String> itOutput = Arrays.stream(output).iterator();
 
         while (itTestCase.hasNext() && itOutput.hasNext()) {
-            String outfile = Objects.requireNonNull(classLoader.getResource(itOutput.next())).getPath();
-            List<String> expectedOutput = Files.readAllLines(Path.of(outfile), StandardCharsets.UTF_8);
             String[] testCase = itTestCase.next();
 
-            MainBst.main(new String[]{testCase[0], testCase[1]});
+            String trainFile = Objects.requireNonNull(classLoader.getResource(testCase[0])).getPath();
+            String probeFile = Objects.requireNonNull(classLoader.getResource(testCase[1])).getPath();
+            String outfile = Objects.requireNonNull(classLoader.getResource(itOutput.next())).getPath();
+            List<String> expectedOutput = Files.readAllLines(Path.of(outfile), StandardCharsets.UTF_8);
+
+            MainBst.main(new String[]{ trainFile, probeFile });
             String[] actualOutput = outputStream.toString().split("\\n");
 
             Iterator<String> itExpected = expectedOutput.iterator();
