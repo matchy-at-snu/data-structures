@@ -89,6 +89,10 @@ public abstract class AbstractBST {
     /**
      * Converts the tree from a plain BST into a Nearly Optimal BST. The
      * frequencies of the trees are used as weights
+     * An NOBST can be constructed recursively in O(n log n) time. First, the root node of an NOBST is
+     * chosen so as to minimize the difference in the weight sums of the left and right subtrees. Then, the
+     * root of each subtree is chosen in the same way recursively. (When a tie needs to be broken, make the
+     * right subtree heavier.)
      */
     public abstract void nobst();
 
