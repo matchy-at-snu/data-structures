@@ -4,8 +4,8 @@ class AdjListGraph<T> implements Graph<T> {
 
     private HashMap<T, LinkedList<T>> adjacentList;
 
-    public AdjListGraph() {
-       adjacentList = new HashMap<>();
+    public AdjListGraph(int numOfVertices) {
+       adjacentList = new HashMap<>(numOfVertices);
     }
 
     @Override
