@@ -63,7 +63,7 @@ class MainBstTest {
                 if (expectedLine.startsWith("CPU") || expectedLine.startsWith("Memory")) {
                     stdout.println(expectedLine + "\t" + actualLine);
                 } else {
-                    stdout.println(expectedLine + "\t" + actualLine);
+//                    stdout.println(expectedLine + "\t" + actualLine);
                     assertEquals(expectedLine, actualLine);
                 }
             }

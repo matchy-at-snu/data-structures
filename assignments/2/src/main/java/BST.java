@@ -8,16 +8,6 @@ import java.util.List;
 
 public class BST extends AbstractBST { // Binary Search Tree implementation
 
-    private class OBSTPair {
-        int cost;
-        int index;
-
-        OBSTPair(int cost, int index) {
-            this.cost = cost;
-            this.index = index;
-        }
-    }
-
     protected boolean NOBSTified = false;
     protected boolean OBSTified = false;
 
@@ -143,84 +133,60 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
     public void nobst() {
         NOBSTified = true; // Set NOBSTified to true.
         ArrayList<Node> nodeList = getAllNodes();
-
-        NOBSTSubTree[][] nbt = nobstify(nodeList);
-        buildNOBST(nodeList, nbt);
+        ArrayList<Node> nobstRootList = nobstify(nodeList);
+        buildNOBST(nodeList, nobstRootList); // O(n) recursive building
     }
 
-    private void buildNOBST(ArrayList<Node> nodeList, NOBSTSubTree[][] m) {
-        Node node = m[0][m.length - 1].root;
-        int index = nodeList.indexOf(node);
-        this.root = node;
-        node.parent = null;
-        this.root.left = _buildNOBST(this.root, 0, index - 1, nodeList, m);
-        this.root.right = _buildNOBST(this.root, index + 1, m.length - 1, nodeList, m);
+    private void buildNOBST(ArrayList<Node> nodeList, ArrayList<Node> nbstRootList) {
+        this.root = nbstRootList.get(0);
+        this.root.parent = null;
+        this.root.left = null;
+        this.root.right = null;
+        this.size = 0;
+        for (int i = 1; i < nbstRootList.size(); i++) {
+            Node node = nbstRootList.get(i);
+            node.parent = null;
+            node.left = null;
+            node.right = null;
+            _insert(root, node);
+        }
     }
 
-    private Node _buildNOBST(Node parent, int low, int high, ArrayList<Node> nodeList, NOBSTSubTree[][] m) {
+    private void _nobstCompute(int low, int high, ArrayList<Node> nbstRootList, ArrayList<Node> nodeList) {
         if (low > high) {
-            return null;
+            return;
         }
-        Node node = m[low][high].root;
-        int index = nodeList.indexOf(node);
-        node.parent = parent;
-        node.left = _buildNOBST(node, low, index - 1, nodeList, m);
-        node.right = _buildNOBST(node, index + 1, high, nodeList, m);
-        return node;
+        int minDifference = arraySum(low + 1, high, nodeList);
+        int rootIndex = low;
+        for (int i = low + 1; i <= high; i++) {
+            int leftFreqSum = arraySum(low, i - 1, nodeList);
+            int rightFreqSum = i == high ? 0 : arraySum(i + 1, high, nodeList);
+            int difference = Math.abs(leftFreqSum - rightFreqSum);
+            if (difference < minDifference) {
+                minDifference = difference;
+                rootIndex = i;
+            }
+        }
+        nbstRootList.add(nodeList.get(rootIndex));
+        _nobstCompute(low, rootIndex - 1, nbstRootList, nodeList);
+        _nobstCompute(rootIndex + 1, high, nbstRootList, nodeList);
     }
 
-    private class NOBSTSubTree {
-        int i;
-        int j;
-        Node root;
-        int cost;
+    private ArrayList<Node> nobstify(ArrayList<Node> nodeList) {
+        ArrayList<Node> nbstRootList = new ArrayList<Node>(this.size);
+        _nobstCompute(0, this.size - 1, nbstRootList, nodeList);
+        return nbstRootList;
+    }
 
-        NOBSTSubTree(int i, int j, Node root, int cost) {
-            this.i = i;
-            this.j = j;
-            this.root = root;
+    private class OBSTPair {
+        int cost; // total cost of the subtree
+        int index;
+
+        OBSTPair(int cost, int index) {
             this.cost = cost;
+            this.index = index;
         }
     }
-
-    private NOBSTSubTree[][] nobstify(ArrayList<Node> nodeList) {
-        NOBSTSubTree[][] nobstMatrix = new NOBSTSubTree[nodeList.size()][nodeList.size()];
-        for (int i = 0; i < nobstMatrix.length; i++) { // Initialize a diagonal matrix
-            for (int j = i; j < nobstMatrix.length; j++) {
-                if (i == j) {
-                    nobstMatrix[i][j] = new NOBSTSubTree(i, j, nodeList.get(i), nodeList.get(i).freq);
-                } else {
-                    nobstMatrix[i][j] = new NOBSTSubTree(i, j, null, Integer.MAX_VALUE);
-                }
-            }
-        }
-        for (int len = 2; len <= nobstMatrix.length; len++) {
-            for (int low = 0; low <= nobstMatrix.length - len; low++) {
-
-                int minCS = Integer.MAX_VALUE;
-                int high = low + len - 1;
-                int p = arraySum(low, high, nodeList);
-                for (int r = low; r <= high; r++) {
-                    // apply monotonicity
-                    int leftMin = r > low ? nobstMatrix[low][r - 1].cost : 0;
-                    int rightMin = r < high ? nobstMatrix[r + 1][high].cost : 0;
-                    int cs = Math.abs(rightMin - leftMin);
-                    if (cs < minCS) {
-                        minCS = cs;
-                        nobstMatrix[low][high].cost = p;
-                        nobstMatrix[low][high].root = nodeList.get(r);
-                    }
-                }
-            }
-        }
-
-        return nobstMatrix;
-    }
-
-
-//    private algorithmK(List<Node> nodeList) {
-//        for
-//    }
 
     public void obst() {
         OBSTified = true; // Set OBSTified to true.
@@ -262,33 +228,38 @@ public class BST extends AbstractBST { // Binary Search Tree implementation
             }
         }
 
-        // DP, len is the distance between high and low. double pair -> triple pair...
+        // K algorithm DP, len is the distance between high and low. double pair -> triple pair...
         for (int len = 2; len <= obstMatrix.length; len++) {
             for (int low = 0; low <= obstMatrix.length - len; low++) {
-                int minCS = Integer.MAX_VALUE;
+                int minCostSum = Integer.MAX_VALUE;
+                int rootIndex = -1;
                 int high = low + len - 1;
-                int p = arraySum(low, high, nodeList);
-                for (int r = low; r <= high; r++) {
-                    // apply monotonicity
+                // apply monotonicity
+                int rootLowerBound = obstMatrix[low][high - 1].index;
+                int rootUpperBound = obstMatrix[low + 1][high].index;
+                for (int r = rootLowerBound; r <= rootUpperBound; r++) {
                     int leftMin = r > low ? obstMatrix[low][r - 1].cost : 0;
                     int rightMin = r < high ? obstMatrix[r + 1][high].cost : 0;
-                    int cs = leftMin + rightMin;
-                    if (cs < minCS) {
-                        minCS = cs;
-                        obstMatrix[low][high].cost = p + minCS;
-                        obstMatrix[low][high].index = r;
+                    int costSum = leftMin + rightMin;
+                    if (costSum < minCostSum) {
+                        minCostSum = costSum;
+                        rootIndex = r;
                     }
                 }
+                obstMatrix[low][high].cost = minCostSum + arraySum(low, high, nodeList);
+                obstMatrix[low][high].index = rootIndex;
             }
         }
     }
 
-
     private int arraySum(int low, int high, ArrayList<Node> nodeList) {
         int result = 0;
+        if (low >= nodeList.size()) {
+            return result;
+        }
         for (int i = low; i <= high; i++) {
             if (i >= nodeList.size())
-                continue;
+                break;
             result += nodeList.get(i).freq;
         }
         return result;
