@@ -1,0 +1,4 @@
+
+class AdjListGraph extends Graph {
+
+}
