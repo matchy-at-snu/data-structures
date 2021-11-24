@@ -46,7 +46,7 @@ class MainAirTest {
         System.setOut(new PrintStream(outputStream));
     }
 
-    void runTestCase(String[] testCase, String tickets) throws IOException {
+    void runTestCase(String[] testCase, String tickets, int num) throws IOException {
         outputStream.reset();
         ClassLoader classLoader = getClass().getClassLoader();
 
@@ -62,6 +62,7 @@ class MainAirTest {
         Iterator<String> itExpected = expectedOutput.iterator();
         Iterator<String> itActual = Arrays.stream(actualOutput).iterator();
 
+        stdout.printf("tickets%02d:\n", num);
         while (itExpected.hasNext() && itActual.hasNext()) {
             String expectedLine = itExpected.next();
             String actualLine = itActual.next();
@@ -70,11 +71,16 @@ class MainAirTest {
                 expectedLine.startsWith("Total CPU time")
             ) {
                 stdout.println(ANSI_GREEN + expectedLine + ANSI_RESET);
-                stdout.println(ANSI_PURPLE + actualLine + ANSI_RESET);
+                stdout.println(ANSI_PURPLE + actualLine + ANSI_RESET );
             } else {
-                assertEquals(expectedLine, actualLine);
+                if (!expectedLine.equals(actualLine)) {
+                    String timeExpected = expectedLine.substring(expectedLine.length()-5, expectedLine.length()-1);
+                    String timeActual = actualLine.substring(actualLine.length()-5, actualLine.length()-1);
+                    assertEquals(timeExpected, timeActual, expectedLine+"\n"+actualLine+"\n\n");
+                }
             }
         }
+        stdout.println();
         outputStream.reset();
     }
 
@@ -83,7 +89,7 @@ class MainAirTest {
         String[] testCase = testCases[0];
         String tickets = output.get(0);
 
-        runTestCase(testCase, tickets);
+        runTestCase(testCase, tickets, 1);
 
         outputStream.reset();
     }
@@ -93,7 +99,7 @@ class MainAirTest {
         String[] testCase = testCases[1];
         String tickets = output.get(1);
 
-        runTestCase(testCase, tickets);
+        runTestCase(testCase, tickets, 2);
         outputStream.reset();
     }
 
@@ -102,7 +108,7 @@ class MainAirTest {
         String[] testCase = testCases[2];
         String tickets = output.get(2);
 
-        runTestCase(testCase, tickets);
+        runTestCase(testCase, tickets, 3);
         outputStream.reset();
     }
 
@@ -111,7 +117,7 @@ class MainAirTest {
         String[] testCase = testCases[3];
         String tickets = output.get(3);
 
-        runTestCase(testCase, tickets);
+        runTestCase(testCase, tickets, 4);
         outputStream.reset();
     }
 
@@ -120,7 +126,7 @@ class MainAirTest {
         String[] testCase = testCases[4];
         String tickets = output.get(4);
 
-        runTestCase(testCase, tickets);
+        runTestCase(testCase, tickets, 5);
         outputStream.reset();
     }
 
@@ -129,7 +135,7 @@ class MainAirTest {
         String[] testCase = testCases[5];
         String tickets = output.get(5);
 
-        runTestCase(testCase, tickets);
+        runTestCase(testCase, tickets, 6);
         outputStream.reset();
     }
 
@@ -138,7 +144,7 @@ class MainAirTest {
         String[] testCase = testCases[6];
         String tickets = output.get(6);
 
-        runTestCase(testCase, tickets);
+        runTestCase(testCase, tickets, 7);
         outputStream.reset();
     }
 
