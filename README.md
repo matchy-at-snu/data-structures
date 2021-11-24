@@ -1,5 +1,11 @@
 # Data Structures
 
+![GitHub top language](https://img.shields.io/github/languages/top/matchy233/data-structures-snu?color=f89917)
+[![wakatime](https://wakatime.com/badge/github/matchy233/data-structures-snu.svg)](https://wakatime.com/badge/github/matchy233/data-structures-snu)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/matchy233/data-structures-snu/Code%20Coverage)
+[![codecov](https://codecov.io/gh/matchy233/data-structures-snu/branch/main/graph/badge.svg?token=N6SG53B488)](https://codecov.io/gh/matchy233/data-structures-snu)
+![GitHub last commit](https://img.shields.io/github/last-commit/matchy233/data-structures-snu)
+
 I'm taking Data Structures this (2021 fall) semester and this is just a repository for taking notes and doing homework. The textbook used in my class is [*Data Structures & Algorithm Analysis*](https://people.cs.vt.edu/shaffer/Book/) (Java version) so the notes and practices will in general follow the book outline.
 
 As is required by the professor all source code in `assignments` directory is written in `Java 11`. 
