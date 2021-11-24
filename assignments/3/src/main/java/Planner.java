@@ -17,7 +17,6 @@ public class Planner {
 
     public Itinerary Schedule(String start, String end, String departure) {
         return flightGraph.findShortestPath(start, end, departure);
-//        return new Itinerary();
     }
 
 }
