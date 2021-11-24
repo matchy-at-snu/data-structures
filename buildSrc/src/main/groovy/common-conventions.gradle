@@ -1,6 +1,9 @@
 plugins {
     id 'application'
     id 'idea'
+
+    // Code coverage
+    id 'jacoco'
 }
 
 repositories {
@@ -16,6 +19,14 @@ dependencies {
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+        csv.enabled false
     }
 }
 
