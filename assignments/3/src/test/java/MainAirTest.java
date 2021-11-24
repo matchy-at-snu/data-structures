@@ -1,6 +1,4 @@
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -18,6 +16,16 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MainAirTest {
+    public static final String ANSI_RESET = "\u001B[0m";
+//    public static final String ANSI_BLACK = "\u001B[30m";
+//    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+//    public static final String ANSI_YELLOW = "\u001B[33m";
+//    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+//    public static final String ANSI_CYAN = "\u001B[36m";
+//    public static final String ANSI_WHITE = "\u001B[37m";
+
     static private final PrintStream stdout = System.out;
     static private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     static private final String[][] testCases = {
@@ -33,52 +41,109 @@ class MainAirTest {
             .mapToObj(num -> ("GPU2/run1/tickets0" + num + ".out"))
             .collect(Collectors.toList());
 
-    @BeforeAll
-    static void redirectOutput() {
+    @BeforeEach
+    void redirectOutput() {
         System.setOut(new PrintStream(outputStream));
     }
 
-    @Test
-    void mainTest() throws IOException {
+    void runTestCase(String[] testCase, String tickets) throws IOException {
+        outputStream.reset();
         ClassLoader classLoader = getClass().getClassLoader();
-        Iterator<String[]> itTestCase = Arrays.stream(testCases).iterator();
-        Iterator<String> itOutput = output.iterator();
 
-        while (itTestCase.hasNext() && itOutput.hasNext()) {
-            String[] testCase = itTestCase.next();
+        String airports = Objects.requireNonNull(classLoader.getResource(testCase[0])).getPath();
+        String flights = Objects.requireNonNull(classLoader.getResource(testCase[1])).getPath();
+        String schedules = Objects.requireNonNull(classLoader.getResource(testCase[2])).getPath();
+        String outfile = Objects.requireNonNull(classLoader.getResource(tickets)).getPath();
+        List<String> expectedOutput = Files.readAllLines(Path.of(outfile), StandardCharsets.UTF_8);
 
-            String airports = Objects.requireNonNull(classLoader.getResource(testCase[0])).getPath();
-            String flights = Objects.requireNonNull(classLoader.getResource(testCase[1])).getPath();
-            String schedules = Objects.requireNonNull(classLoader.getResource(testCase[2])).getPath();
-            String outfile = Objects.requireNonNull(classLoader.getResource(itOutput.next())).getPath();
-            List<String> expectedOutput = Files.readAllLines(Path.of(outfile), StandardCharsets.UTF_8);
+        MainAir.main(new String[]{airports, flights, schedules});
+        String[] actualOutput = outputStream.toString().split("\\n");
 
-            MainAir.main(new String[]{airports, flights, schedules});
-            String[] actualOutput = outputStream.toString().split("\\n");
+        Iterator<String> itExpected = expectedOutput.iterator();
+        Iterator<String> itActual = Arrays.stream(actualOutput).iterator();
 
-            Iterator<String> itExpected = expectedOutput.iterator();
-            Iterator<String> itActual = Arrays.stream(actualOutput).iterator();
-
-            while (itExpected.hasNext() && itActual.hasNext()) {
-                String expectedLine = itExpected.next();
-                String actualLine = itActual.next();
-                if (expectedLine.startsWith("Elapsed") ||
-                    expectedLine.startsWith("Memory") ||
-                    expectedLine.startsWith("Total CPU time")
-                ) {
-                    stdout.println(expectedLine + "\t" + actualLine);
-                } else {
-//                    stdout.println(expectedLine + "\t" + actualLine);
-                    assertEquals(expectedLine, actualLine);
-                }
+        while (itExpected.hasNext() && itActual.hasNext()) {
+            String expectedLine = itExpected.next();
+            String actualLine = itActual.next();
+            if (expectedLine.startsWith("Elapsed") ||
+                expectedLine.startsWith("Memory") ||
+                expectedLine.startsWith("Total CPU time")
+            ) {
+                stdout.println(ANSI_GREEN + expectedLine + ANSI_RESET);
+                stdout.println(ANSI_PURPLE + actualLine + ANSI_RESET);
+            } else {
+                assertEquals(expectedLine, actualLine);
             }
-
-            outputStream.reset();
         }
+        outputStream.reset();
     }
 
-    @AfterAll
-    static void recoverOutput() {
+    @Test
+    void testHawaiianCustomers10() throws IOException {
+        String[] testCase = testCases[0];
+        String tickets = output.get(0);
+
+        runTestCase(testCase, tickets);
+
+        outputStream.reset();
+    }
+
+    @Test
+    void testHawaiianCustomers100() throws IOException {
+        String[] testCase = testCases[1];
+        String tickets = output.get(1);
+
+        runTestCase(testCase, tickets);
+        outputStream.reset();
+    }
+
+    @Test
+    void testHawaiianCustomersBogus() throws IOException {
+        String[] testCase = testCases[2];
+        String tickets = output.get(2);
+
+        runTestCase(testCase, tickets);
+        outputStream.reset();
+    }
+
+    @Test
+    void testHawaiianFlightSingleCustomers100() throws IOException {
+        String[] testCase = testCases[3];
+        String tickets = output.get(3);
+
+        runTestCase(testCase, tickets);
+        outputStream.reset();
+    }
+
+    @Test
+    void testAlaskaCustomers200() throws IOException {
+        String[] testCase = testCases[4];
+        String tickets = output.get(4);
+
+        runTestCase(testCase, tickets);
+        outputStream.reset();
+    }
+
+    @Test
+    void testAlaskaCustomers2000() throws IOException {
+        String[] testCase = testCases[5];
+        String tickets = output.get(5);
+
+        runTestCase(testCase, tickets);
+        outputStream.reset();
+    }
+
+    @Test
+    void testAlaskaCustomers20000() throws IOException {
+        String[] testCase = testCases[6];
+        String tickets = output.get(6);
+
+        runTestCase(testCase, tickets);
+        outputStream.reset();
+    }
+
+    @AfterEach
+    void recoverOutput() {
         System.setOut(stdout);
     }
 }
