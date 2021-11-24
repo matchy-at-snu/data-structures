@@ -42,6 +42,10 @@ public class FlightGraph {
      * Use Dijkstra's algorithm to find single-pair shortest path
      */
     public Itinerary findShortestPath(String source, String dest, String departure) {
+        if (!vertices.containsKey(source) || !vertices.containsKey(dest)) {
+            return new Itinerary();
+        }
+
         // Calculate the departure time in minutes
         int depTime = Util.convertStringToMinutes(departure);
 
