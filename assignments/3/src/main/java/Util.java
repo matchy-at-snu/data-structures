@@ -10,21 +10,11 @@ public class Util {
         return hours * 60 + minutes;
     }
 
-    public static String convertMinutesToString(int minutes) {
-        int m = minutes % DAY;
-        int hours = m / 60;
-        return String.format("%02d", hours) + String.format("%02d", m % 60);
-    }
-
     public static int calculateWaitTime(int currentTime, int departureTime) {
         int currTime = currentTime % DAY;
         if (departureTime < currTime) {
             departureTime += DAY;
         }
-        return departureTime - currentTime;
-    }
-
-    public static int calculateTimeOfDay(int minutes) {
-        return minutes % DAY;
+        return departureTime - currTime;
     }
 }
