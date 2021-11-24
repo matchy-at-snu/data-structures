@@ -92,18 +92,20 @@ public class FlightGraph {
             }
             S.add(airport);
             V.remove(airport);
+
+            int connectionTime = vertices.get(airport);
+            int currentTime = itinerary.get(airport).key.getLast().getEndTime() + connectionTime;
+
             // iterate through all edges starting at airport
             for (var flight : graph.get(airport)) {
                 // if there is a flight between v and destAirport
-                int connectionTime = vertices.get(airport);
-                int currentTime = depTime + commuteTime + connectionTime;
                 // if the destination airport has not found a shortest path
                 if (V.contains(flight.getDestAirport())) {
                     // get the current path from source to dest
                     var tmp = itinerary.get(flight.getDestAirport());
                     int currCommuteTime = tmp.value;
-                    int newCommuteTime = currentTime +
-                            Util.calculateWaitTime(currentTime, flight.getStartTime()) +
+                    int newCommuteTime = commuteTime + connectionTime +
+                            Util.calculateWaitTime(currentTime, flight.getStartTime()) + // wait time before taking off
                             flight.getCommuteDuration();
                     if (newCommuteTime < currCommuteTime) {
                         tmp.key = new LinkedList<>(itinerary.get(airport).key);

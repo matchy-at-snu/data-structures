@@ -41,10 +41,7 @@ public class Flight {
 
         int startTime = Util.convertStringToMinutes(stime);
         int endTime = Util.convertStringToMinutes(dtime);
-        if (endTime < startTime) {
-            endTime = endTime + Util.DAY;
-        }
-        this.commuteDuration = endTime - startTime;
+        this.commuteDuration = Util.calculateWaitTime(startTime, endTime);
     }
 
     public void print() {
