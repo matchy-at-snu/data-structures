@@ -10,3 +10,7 @@ application {
     mainClass = 'MainBst'
 }
 
+test {
+    exclude '**/MainBstTest.class'
+}
+
