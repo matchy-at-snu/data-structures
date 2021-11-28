@@ -49,10 +49,6 @@ public class FlightGraph {
         // Calculate the departure time in minutes
         int depTime = Util.convertStringToMinutes(departure);
 
-        // Airport list that already found the shortest itinerary
-        ArrayList<String> S = new ArrayList<>(vertices.size());
-        S.add(source);
-
         // Airports that haven't found the shortest itinerary
         HashSet<String> V = new HashSet<>(vertices.keySet());
         V.remove(source);
@@ -94,7 +90,6 @@ public class FlightGraph {
             if (airport.equals(dest)) {
                 return new Itinerary(itinerary.get(dest).key);
             }
-            S.add(airport);
             V.remove(airport);
 
             int connectionTime = vertices.get(airport);
