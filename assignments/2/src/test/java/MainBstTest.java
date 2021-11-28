@@ -22,14 +22,14 @@ class MainBstTest {
             {"10words.txt", "10words.txt"},
             {"1000words.txt", "2000words.txt"},
             {"1000words.txt", "2000words2.txt"},
-            {"sawyer.txt", "sawyer.txt"},
-            {"sawyer.txt", "mohicans.txt"},
-            {"mohicans.txt", "mohicans.txt"},
-            {"mohicans.txt", "sawyer.txt"}
+//            {"sawyer.txt", "sawyer.txt"},
+//            {"sawyer.txt", "mohicans.txt"},
+//            {"mohicans.txt", "mohicans.txt"},
+//            {"mohicans.txt", "sawyer.txt"}
     };
     static private final String[] output = {
             "10words.out", "1000words.out", "1000words2.out",
-            "sawyer.out", "sawyer-mohicans.out", "mohicans.out", "mohicans-sawyer.out"
+//            "sawyer.out", "sawyer-mohicans.out", "mohicans.out", "mohicans-sawyer.out"
     };
 
     @BeforeAll
