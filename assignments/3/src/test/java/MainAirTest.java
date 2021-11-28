@@ -17,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MainAirTest {
     public static final String ANSI_RESET = "\u001B[0m";
-//    public static final String ANSI_BLACK = "\u001B[30m";
+    //    public static final String ANSI_BLACK = "\u001B[30m";
 //    public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
-//    public static final String ANSI_YELLOW = "\u001B[33m";
+    //    public static final String ANSI_YELLOW = "\u001B[33m";
 //    public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_PURPLE = "\u001B[35m";
 //    public static final String ANSI_CYAN = "\u001B[36m";
@@ -46,6 +46,20 @@ class MainAirTest {
         System.setOut(new PrintStream(outputStream));
     }
 
+    int checkTimeSpent(String startTime, String ticketLine) {
+        String[] e = ticketLine.split("[^0-9]");
+        int result = 0;
+        int currTime = Util.convertStringToMinutes(startTime);
+        for (String s : e) {
+            if (s.length() > 0) {
+                int time = Integer.parseInt(s);
+                result += time - currTime;
+                currTime = time;
+            }
+        }
+        return result;
+    }
+
     void runTestCase(String[] testCase, String tickets, int num) throws IOException {
         outputStream.reset();
         ClassLoader classLoader = getClass().getClassLoader();
@@ -63,22 +77,30 @@ class MainAirTest {
         Iterator<String> itActual = Arrays.stream(actualOutput).iterator();
 
         stdout.printf("tickets%02d:\n", num);
+
+        String startTime = "";
         while (itExpected.hasNext() && itActual.hasNext()) {
             String expectedLine = itExpected.next();
             String actualLine = itActual.next();
             if (expectedLine.startsWith("Elapsed") ||
-                expectedLine.startsWith("Memory") ||
-                expectedLine.startsWith("Total CPU time")
+                    expectedLine.startsWith("Memory") ||
+                    expectedLine.startsWith("Total CPU time")
             ) {
                 stdout.println(ANSI_GREEN + expectedLine + ANSI_RESET);
-                stdout.println(ANSI_PURPLE + actualLine + ANSI_RESET );
+                stdout.println(ANSI_PURPLE + actualLine + ANSI_RESET);
+            } else if (expectedLine.startsWith(">>")) {
+                String[] tmp = expectedLine.split(":");
+                startTime = tmp[tmp.length - 1];
             } else {
                 if (!expectedLine.equals(actualLine)) {
-                    String timeExpected = expectedLine.substring(expectedLine.length()-5, expectedLine.length()-1);
-                    String timeActual = actualLine.substring(actualLine.length()-5, actualLine.length()-1);
-                    assertEquals(timeExpected, timeActual, expectedLine+"\n"+actualLine+"\n\n");
+                    stdout.println(ANSI_GREEN + expectedLine + ANSI_RESET);
+                    stdout.println(ANSI_PURPLE + actualLine + ANSI_RESET);
+                    int timeExpected = checkTimeSpent(startTime, expectedLine);
+                    int timeActual = checkTimeSpent(startTime, actualLine);
+                    assertEquals(timeExpected, timeActual, expectedLine + "\n" + actualLine + "\n\n");
                 }
             }
+
         }
         stdout.println();
         outputStream.reset();
