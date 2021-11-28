@@ -2,7 +2,7 @@ import java.util.*;
 
 public class FlightGraph {
 
-    private static class Pair<K, V extends Comparable> implements Comparable<Pair> {
+    private static class Pair<K, V extends Comparable<? super V>> implements Comparable<Pair<K, V>> {
         private K key;
         private V value;
 
@@ -12,7 +12,7 @@ public class FlightGraph {
         }
 
         @Override
-        public int compareTo(Pair pair) {
+        public int compareTo(Pair<K, V> pair) {
             return this.value.compareTo(pair.value);
         }
 
