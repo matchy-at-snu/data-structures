@@ -54,7 +54,7 @@ public class FlightGraph {
         S.add(source);
 
         // Airports that haven't found the shortest itinerary
-        ArrayList<String> V = new ArrayList<>(vertices.keySet());
+        HashSet<String> V = new HashSet<>(vertices.keySet());
         V.remove(source);
 
         // Min Heap
