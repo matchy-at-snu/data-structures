@@ -50,29 +50,29 @@ public class FlightGraph {
         int depTime = Util.convertStringToMinutes(departure);
 
         // Airports that haven't found the shortest itinerary
-        HashSet<String> V = new HashSet<>(vertices.keySet());
-        V.remove(source);
+        HashSet<String> shortestPathNotFoundVertices = new HashSet<>(vertices.keySet());
+        shortestPathNotFoundVertices.remove(source);
 
         // Min Heap
-        PriorityQueue<Pair<String, Integer>> d = new PriorityQueue<>();
+        PriorityQueue<Pair<String, Integer>> shortestPathMinHeap = new PriorityQueue<>();
         HashMap<String, Pair<LinkedList<Flight>, Integer>> itinerary = new HashMap<>();
 
         // get all flights starting from source
         var flights = graph.get(source);
-        for (var v : V) {
+        for (var v : shortestPathNotFoundVertices) {
             itinerary.put(v, new Pair<>(new LinkedList<>(), Integer.MAX_VALUE));
-            d.add(new Pair<>(v, Integer.MAX_VALUE));
+            shortestPathMinHeap.add(new Pair<>(v, Integer.MAX_VALUE));
         }
         for (var flight : flights) {
             // if the destination airport can be reached directly
-            if (V.contains(flight.getDestAirport())) {
+            if (shortestPathNotFoundVertices.contains(flight.getDestAirport())) {
                 int commuteTime = Util.calculateWaitTime(depTime, flight.getStartTime()) + flight.getCommuteDuration();
                 var tmp = itinerary.get(flight.getDestAirport());
                 if (commuteTime < tmp.value) {
                     tmp.key = new LinkedList<>();
                     tmp.key.add(flight);
                     tmp.value = commuteTime;
-                    d.add(
+                    shortestPathMinHeap.add(
                             new Pair<>(
                                     flight.getDestAirport(),
                                     commuteTime
@@ -82,15 +82,15 @@ public class FlightGraph {
             }
         }
 
-        while (!V.isEmpty()) {
+        while (!shortestPathMinHeap.isEmpty()) {
             // get the minimum value out of minheap
-            Pair<String, Integer> v = d.poll();
+            Pair<String, Integer> v = shortestPathMinHeap.poll();
             String airport = v.key;
             int commuteTime = v.value;
             if (airport.equals(dest)) {
                 return new Itinerary(itinerary.get(dest).key);
             }
-            V.remove(airport);
+            shortestPathNotFoundVertices.remove(airport);
 
             int connectionTime = vertices.get(airport);
             int currentTime = itinerary.get(airport).key.getLast().getEndTime() + connectionTime;
@@ -99,7 +99,7 @@ public class FlightGraph {
             for (var flight : graph.get(airport)) {
                 // if there is a flight between v and destAirport
                 // if the destination airport has not found a shortest path
-                if (V.contains(flight.getDestAirport())) {
+                if (shortestPathNotFoundVertices.contains(flight.getDestAirport())) {
                     // get the current path from source to dest
                     var tmp = itinerary.get(flight.getDestAirport());
                     int currCommuteTime = tmp.value;
@@ -110,7 +110,7 @@ public class FlightGraph {
                         tmp.key = new LinkedList<>(itinerary.get(airport).key);
                         tmp.key.add(flight);
                         tmp.value = newCommuteTime;
-                        d.add(
+                        shortestPathMinHeap.add(
                                 new Pair<>(
                                         flight.getDestAirport(),
                                         newCommuteTime
